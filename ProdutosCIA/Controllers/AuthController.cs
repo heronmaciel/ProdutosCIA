@@ -13,17 +13,17 @@ namespace ProdutosCIA.Controllers
     public class AuthController : Controller
     {
         private readonly ITokenService _tokenService;
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AuthController(ITokenService tokenService, IUserRepository userRepository)
+        public AuthController(ITokenService tokenService, IUnitOfWork unitOfWork)
         {
             _tokenService = tokenService;
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
         {
-            var user = await _userRepository.GetByUsernameAsync(loginRequest.Username);
+            var user = await _unitOfWork.Users.GetByUsernameAsync(loginRequest.Username);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.PasswordHash))
             {
