@@ -15,7 +15,9 @@ namespace Domain.Entities
         public Company Company { get; set; }
         public int Quantity { get; set; }
 
-        public Stock( Guid productId,Guid companyId, int initialQuantity)
+
+        public Stock() { }
+        public Stock(Guid productId, Guid companyId, int initialQuantity)
         {
             if (initialQuantity < 0)
                 throw new ArgumentException("A Quantidade inicial precisa ser maior que 0 (zero).");

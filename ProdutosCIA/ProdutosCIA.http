@@ -1,6 +1,6 @@
 @ProdutosCIA_HostAddress = http://localhost:5063
 
-GET {{ProdutosCIA_HostAddress}}/weatherforecast/
+GET {{ProdutosCIA_HostAddress}}/Auth/
 Accept: application/json
 
 ###
