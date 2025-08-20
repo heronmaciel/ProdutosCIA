@@ -36,7 +36,7 @@ namespace Domain.Entities
         public void RemoveStock(int quantity)
         {
             if (quantity <= 0)
-                throw new ArgumentException("A quantidade de estoque para baixar deve ser maior do que 0 (zero).";
+                throw new ArgumentException("A quantidade de estoque para baixar deve ser maior do que 0 (zero).");
             if (Quantity - quantity < 0)
                 throw new InvalidOperationException("Estoque insuficiente para a baixa");
 
