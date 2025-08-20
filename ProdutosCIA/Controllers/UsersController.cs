@@ -1,8 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
-using Application.Repository;
 using Domain.Entities;
-using Infrastructure;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ProdutosCIA.Controllers
@@ -11,13 +10,11 @@ namespace ProdutosCIA.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
-        private readonly AppDbContext _context;
+        private IUnitOfWork _unitOfWork;
 
-        public UsersController(IUserRepository userRepository, AppDbContext context)
+        public UsersController(IUnitOfWork unitOfWork)
         {
-            _userRepository = userRepository;
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
@@ -30,8 +27,7 @@ namespace ProdutosCIA.Controllers
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(createUserDto.Password)
             };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Users.AddAsync(user);
 
             return CreatedAtAction(nameof(CreateUser), new { id = user.Id }, user);
 

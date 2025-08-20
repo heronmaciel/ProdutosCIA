@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Application.Interfaces;
 using Infrastructure.Security;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Application.Repository;
+using Infrastructure.Persistence;
+using Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

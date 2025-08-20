@@ -1,12 +1,11 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace Application.Repository
+
+
+namespace Infrastructure.Persistence
 {
     public class UserRepository : IUserRepository
     {
@@ -19,7 +18,7 @@ namespace Application.Repository
 
         public async Task<User?> GetByUsernameAsync(string username)
         {
-            return await _context.Users.FirstOrDefaultAsync(u=>u.Username == username)
+            return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
 
         public async Task AddAsync(User user)

@@ -13,24 +13,19 @@ namespace ProdutosCIA.Controllers
     public class AuthController : Controller
     {
         private readonly ITokenService _tokenService;
-        private readonly AppDbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public AuthController(ITokenService tokenService)
+        public AuthController(ITokenService tokenService, IUserRepository userRepository)
         {
             _tokenService = tokenService;
+            _userRepository = userRepository;
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username = loginRequest.Username);
+            var user = await _userRepository.GetByUsernameAsync(loginRequest.Username);
 
-            if (user == null)
-            {
-                return Unauthorized("Usuário ou senha inválidos");
-            }
-
-            var isPasswordValid = BCrypt.Net.BCrypt.Verify(loginRequest.Password, loginRequest.PasswordHash);
-            if (isPasswordValid)
+            if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.PasswordHash))
             {
                 return Unauthorized("Usuário ou senha inválidos");
             }
