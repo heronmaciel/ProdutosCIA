@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Application.Interfaces;
+using Infrastructure.Data;
+using Infrastructure.Persistence;
 using Infrastructure.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Infrastructure.Persistence;
-using Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +45,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    await DataSeeder.SeedAsync(app);
 }
 
 app.UseHttpsRedirection();
